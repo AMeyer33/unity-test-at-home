@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 372560620}
   - component: {fileID: 372560619}
   - component: {fileID: 372560621}
+  - component: {fileID: 372560622}
   m_Layer: 0
   m_Name: Luigi_0
   m_TagString: Untagged
@@ -206,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 372560618}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.14, y: -4.7, z: 0}
+  m_LocalPosition: {x: 0.66, y: 0.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -224,6 +225,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1960810ae1a694cb87aa48f85b048e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestScript
+--- !u!114 &372560622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372560618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e91039333c2f44c80013b22bcb7caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  moveSpeed: 5
 --- !u!1 &603974955
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,6 +295,7 @@ GameObject:
   - component: {fileID: 705054333}
   - component: {fileID: 705054332}
   - component: {fileID: 705054331}
+  - component: {fileID: 705054335}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -406,6 +421,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &705054335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705054330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e91039333c2f44c80013b22bcb7caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  moveSpeed: 5
 --- !u!1 &1142001218
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +647,7 @@ Transform:
   m_GameObject: {fileID: 1845645472}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.491, y: -3.8602, z: 0}
+  m_LocalPosition: {x: -0.76, y: -5.5, z: 0}
   m_LocalScale: {x: 25.111822, y: 7.6501756, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
