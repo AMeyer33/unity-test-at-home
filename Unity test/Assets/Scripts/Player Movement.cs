@@ -8,10 +8,14 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
 
     [Header("Jumping")]
-    public float jumpForce = 12f; // Increase this value in the Inspector to jump HIGHER!
-    public Transform groundCheck;  // An empty GameObject placed at the player's feet
-    public LayerMask groundLayer;  // Set this to your "Ground" layer in Unity
+    public float jumpForce = 12f;
+    public float fallMultiplier = 10f;     // Increases gravity when falling for a faster descent
+    public float lowJumpMultiplier = 2f;    // Increases gravity if jump button is released early
+    public Transform groundCheck;
+    public LayerMask groundLayer;
     private bool isGrounded;
+    private bool jumpRequested;
+    private bool isHoldingJump;
 
     private Rigidbody2D rb;
 
@@ -22,35 +26,65 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // 1. Horizontal Movement (Left/Right)
         horizontalInput = 0f;
+
         if (Keyboard.current != null)
         {
-            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed) horizontalInput = -1f;
-            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) horizontalInput = 1f;
-        }
+            // Horizontal Input
+            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed) 
+                horizontalInput = -1f;
+            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) 
+                horizontalInput = 1f;
 
-        // 2. Ground Check (Prevents infinite jumping in mid-air)
-        // Checks if a small imaginary circle at the player's feet overlaps with the Ground layer
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+            // Track if jump key is held down
+            isHoldingJump = Keyboard.current.wKey.isPressed || 
+                            Keyboard.current.spaceKey.isPressed || 
+                            Keyboard.current.upArrowKey.isPressed;
 
-        // 3. Jump Input
-        // If the player presses W, Space, or Up, AND they are standing on the ground
-        if ((Keyboard.current.wKey.wasPressedThisFrame || 
-             Keyboard.current.spaceKey.wasPressedThisFrame || 
-             Keyboard.current.upArrowKey.wasPressedThisFrame) && isGrounded)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            // Jump Request
+            if (Keyboard.current.wKey.wasPressedThisFrame || 
+                Keyboard.current.spaceKey.wasPressedThisFrame || 
+                Keyboard.current.upArrowKey.wasPressedThisFrame)
+            {
+                jumpRequested = true;
+            }
         }
     }
 
     void FixedUpdate()
     {
-        // Move horizontally while preserving whatever vertical speed (falling/jumping) gravity dictates
+        // Ground Check
+        if (groundCheck != null)
+        {
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        }
+
+        // Apply Horizontal Movement
         rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
+
+        // Apply Jump
+        if (jumpRequested)
+        {
+            if (isGrounded)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            }
+            jumpRequested = false;
+        }
+
+        // --- SNAPPY JUMP PHYSICS ---
+        // 1. Fall faster after reaching the peak of the jump
+        if (rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+        }
+        // 2. Short hop: Fall faster if the player releases the jump key mid-air
+        else if (rb.linearVelocity.y > 0 && !isHoldingJump)
+        {
+            rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+        }
     }
 
-    // Draw the ground check circle in the editor so you can see it
     private void OnDrawGizmosSelected()
     {
         if (groundCheck != null)
