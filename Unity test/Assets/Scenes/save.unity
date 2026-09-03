@@ -583,7 +583,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -869,6 +869,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 7
   jumpForce: 9
+  fallMultiplier: 10
+  lowJumpMultiplier: 2
   groundCheck: {fileID: 2012706074}
   groundLayer:
     serializedVersion: 2
